@@ -5,9 +5,34 @@ from distutils.core import setup
 VERSION = '1.0'
 DESCRIPTION = "Human-oriented representation of time deltas, a Python library"
 LONG_DESCRIPTION = """
-First, I shall define what time delta is. Since delta generally means "difference", we take time delta to stand for difference between two events in time. Quite common, however, is to have the current time for the second event. In pytimeago we deal with time deltas from such a perspective.
+Convert time deltas into phrases like "5min ago",
+"3h ago", "2 days ago" etc.
 
-Quite possibly, you can make use of this library if your application displays some dynamically generated items to the user, and you are looking for a good way to present information on how long ago specific item was created/processed/whatever.
+This package has a number of modules in it, each for separate
+language.  It is standard that module pytimeago.X has function
+X, which accepts at least on argument -- number of seconds
+between two events.  It may also accept extra keywords, which
+should be documented in the docstring of the function.
+Returned is always unicode string.
+
+Usage pattern:
+
+    from pytimeago.english import english # or other...
+    from time import time, sleep
+
+    a = time()
+    # ...do something here...
+    delta = int(time() - a)
+    print "job started %s" % english(delta)
+
+Prints, e.g.
+
+    job started 15mins ago
+
+Licenced under GNU Lesser General Public License,
+you can get a copy at: http://www.gnu.org/licenses/lgpl.html
+
+Written by Adomas Paltanavicius (adomas.paltanavicius@gmail.com).
 """
 
 CLASSIFIERS = filter(None, map(str.strip,
@@ -27,7 +52,7 @@ setup(
     long_description=LONG_DESCRIPTION,
     classifiers=CLASSIFIERS,
     author="Adomas Paltanavicius",
-    author_email="adomas@adomas.com",
+    author_email="adomas.paltanavicius@gmail.com",
     url="http://adomas.org/pytimeago/",
     license="LGPL",
     packages=['pytimeago'],

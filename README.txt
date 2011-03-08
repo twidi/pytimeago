@@ -1,26 +1,28 @@
-= Human-oriented representation of time deltas, a Python library =
+Convert time deltas into phrases like "5min ago",
+"3h ago", "2 days ago" etc.
 
-Original description from http://adomas.org/pytimeago/ :
+This package has a number of modules in it, each for separate
+language.  It is standard that module pytimeago.X has function
+X, which accepts at least on argument -- number of seconds
+between two events.  It may also accept extra keywords, which
+should be documented in the docstring of the function.
+Returned is always unicode string.
 
-First, I shall define what time delta is. Since Δ generally means “difference”, we take time delta to stand for difference between two events in time. Quite common, however, is to have the current time for the second event. In pytimeago we deal with time deltas from such a perspective.
+Usage pattern:
 
-Quite possibly, you can make use of this library if your application displays some dynamically generated items to the user, and you are looking for a good way to present information on how long ago specific item was created/processed/whatever.
+    from pytimeago.english import english # or other...
+    from time import time, sleep
 
-Below is small code snippet demonstrating how simple it is to embed pytimeago:
-
-  from pytimeago.english import english
-  from time import time
-
-  message = queue.getNextMessage()
-  delta = time() - message.arrived_time
-  print "Message arrived %s" % english(delta)
+    a = time()
+    # ...do something here...
+    delta = int(time() - a)
+    print "job started %s" % english(delta)
 
 Prints, e.g.
 
-  Message arrived 15mins ago
+    job started 15mins ago
 
-As you see, pytimeago is package, and has individual modules for every language supported. As of 2006-08-13 the only supported language is English. However, you can take a look at rather trivial implementation of English engine, write one for your language, and send it to to me (email at the bottom of page).
+Licenced under GNU Lesser General Public License,
+you can get a copy at: http://www.gnu.org/licenses/lgpl.html
 
-Every language should come with a set of doctests (I prefer them to casual unit tests), just like the English version does. Don't be too verbose, but check essential cases.
-
-pytimeago is licenced under LGPL. I'd be happy to hear if you use this in your software. Note that language module(s) can also be taken standalone to other projects, if desired.
+Written by Adomas Paltanavicius (adomas.paltanavicius@gmail.com).

@@ -1,0 +1,7 @@
+Original code by:
+  Adomas Paltanavicius <adomas.paltanavicius@gmail.com>
+  http://adomas.org/
+
+Packaged, and french version, by:
+  Stephane Angel aka Twidi <s.angel@twidi.com>
+  http://twidi.com

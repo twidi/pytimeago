@@ -2,7 +2,7 @@
 
 from distutils.core import setup
 
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 DESCRIPTION = "Human-oriented representation of time deltas, a Python library"
 LONG_DESCRIPTION = """
 Convert time deltas into phrases like "5min ago",

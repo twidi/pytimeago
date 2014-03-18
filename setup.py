@@ -8,6 +8,8 @@ LONG_DESCRIPTION = """
 Convert time deltas into phrases like "5min ago",
 "3h ago", "2 days ago" etc.
 
+Base work from Adomas Paltanavicius, but with two added versions: french and "short english"
+
 This package has a number of modules in it, each for separate
 language.  It is standard that module pytimeago.X has function
 X, which accepts at least on argument -- number of seconds
@@ -36,7 +38,7 @@ Written by Adomas Paltanavicius (adomas.paltanavicius@gmail.com).
 """
 
 CLASSIFIERS = filter(None, map(str.strip,
-"""                 
+"""
 Intended Audience :: Developers
 License :: OSI Approved :: MIT License
 Programming Language :: Python
@@ -53,7 +55,7 @@ setup(
     classifiers=CLASSIFIERS,
     author="Adomas Paltanavicius",
     author_email="adomas.paltanavicius@gmail.com",
-    url="http://adomas.org/pytimeago/",
+    url="https://github.com/twidi/pytimeago",
     license="LGPL",
     packages=['pytimeago'],
     platforms=['any'],

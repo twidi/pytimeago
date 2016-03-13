@@ -1,5 +1,5 @@
-Convert time deltas into phrases like "5min ago",
-"3h ago", "2 days ago" etc.
+Convert time deltas into phrases like "5 minutes ago",
+"3 hours ago", "2 days ago" etc.
 
 This package has a number of modules in it, each for separate
 language.  It is standard that module pytimeago.X has function
@@ -10,7 +10,7 @@ Returned is always unicode string.
 
 Usage pattern:
 
-    from pytimeago.english import english # or other...
+    from pytimeago.english import english
     from time import time, sleep
 
     a = time()
@@ -20,7 +20,13 @@ Usage pattern:
 
 Prints, e.g.
 
-    job started 15mins ago
+    job started 15 minutes ago
+
+Available languages are:
+
+	from pytimeago.english import english
+	from pytimeago.english import english_short
+	from pytimeago.french import french
 
 Licenced under GNU Lesser General Public License,
 you can get a copy at: http://www.gnu.org/licenses/lgpl.html

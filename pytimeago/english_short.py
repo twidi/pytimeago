@@ -1,16 +1,16 @@
 # pytimeago -- library for rendering time deltas
 # Copyright (C) 2006 Adomas Paltanavicius
-# 
+#
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
 # License as published by the Free Software Foundation; either
 # version 2.1 of the License, or (at your option) any later version.
-# 
+#
 # This library is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -20,7 +20,10 @@
 $Id: english_short.py 12 2006-09-14 09:07:02Z admp $
 """
 
+import math
+
 halfstr = u'\u00BD'
+nohalf = u''
 
 def english_short(delta, **kw):
     """English language for pytimeago.  There are no keywords supported.
@@ -28,10 +31,14 @@ def english_short(delta, **kw):
     First, load utilities for testing:
 
     >>> from test import *
-    
+
     The function accepts delta in seconds:
 
     >>> english_short(0)
+    u'now'
+    >>> english_short(0.4)
+    u'now'
+    >>> english_short(20)
     u'now'
 
     If delta falls in range 0..59 minutes, it is said so:
@@ -45,9 +52,9 @@ def english_short(delta, **kw):
     periods:
 
     >>> english_short(hours(3))
-    u'3h'
+    u'3 h'
     >>> english_short(hours(12, 25))
-    u'12\\xbdh'
+    u'12\\xbd h'
 
     Next, if delta is less than 7 days, it reported just so.
 
@@ -96,69 +103,87 @@ def english_short(delta, **kw):
 
     >>> english_short(years(2))
     u'2 y'
+    >>> english_short(months(18))
+    u'1\\xbd y'
     >>> english_short(months(12))
     u'1 y'
 
     """
 
     # Now
-    if delta == 0:
+    if delta < 0:
         return u'now'
 
     # < 1 hour
-    mins = delta/60
+    mins = delta/60.
+    if mins < 1.5:
+        return u'1 mn'
     if mins < 60:
-        return u'%d mn' % mins
+        return u'%d mn' % math.ceil(mins)
 
     # < 1 day
+    if mins < 75:
+        return u'1 h'
     hours, mins = divmod(mins, 60)
+    if 15 <= mins <= 45:
+        half = halfstr
+    else:
+        half = nohalf
+        if mins > 45:
+            hours += 1
     if hours < 24:
-        # "half" is for 30 minutes in the middle of an hour
-        half = 15 <= mins <= 45 and halfstr or u''
-        return u'%d%sh' % (hours, half)
+        return u'%d%s h' % (hours, half)
 
     # < 7 days
-    hours += round(mins/60.)
-    days, hours = divmod(hours, 24)
-    if days == 1:
+    if hours < 30:
         return u'1 d'
+    days, hours = divmod(hours, 24)
+    if 6 <= hours <= 18:
+        half = halfstr
+    else:
+        half = nohalf
+        if hours > 18:
+            days += 1
     if days < 7:
-        half = 6 <= hours <= 18 and halfstr or u''
         return u'%d%s d' % (days, half)
 
     # < 4 weeks
-    days += round(hours/24.)
     if days < 9:
         return u'1 w'
     weeks, wdays = divmod(days, 7)
     if 2 <= wdays <= 4:
         half = halfstr
     else:
-        half = u''
+        half = nohalf
         if wdays > 4:
             weeks += 1
     if weeks < 4: # So we don't get 4 weeks
         return u'%d%s w' % (weeks, half)
 
     # < year
-    if days < 35:
+    if days < 40:
         return u'1 mo'
-    months, days = divmod(days, 30)
+    months, days = divmod(days, 30.4)
     if 10 <= days <= 20:
         half = halfstr
     else:
-        half = u''
+        half = nohalf
         if days > 20:
             months += 1
     if months < 12:
         return u'%d%s mo' % (months, half)
 
     # Don't go further
-    years = round(months/12.)
-    if years == 1:
+    if months < 16:
         return u'1 y'
+    years, months = divmod(months, 12)
+    if 4 <= months <= 8:
+        half = halfstr
     else:
-        return u'%d y' % years
+        half = nohalf
+        if months > 8:
+            years += 1
+    return u'%d%s y' % (years, half)
 
 
 # Doctest
